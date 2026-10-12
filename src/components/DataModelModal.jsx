@@ -38,7 +38,7 @@ export default function DataModelModal({ isOpen, onClose }) {
             <FileCode className="w-4 h-4 text-[#DFC08D]" />
             <div>
               <h3 className="font-serif-celestial text-xl font-medium text-[#FDFBF7]">
-                Aetheria Data Model Architecture Spec
+                Nebula Data Model Architecture Spec
               </h3>
               <p className="text-xs text-[#C9B89B] font-light">
                 Deliverable Note: Profile & Brief Data Model (Tools, Skills, Formats & Commercial-Use)

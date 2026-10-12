@@ -153,7 +153,7 @@ export default function PortfolioDetailModal({
             <div className="mt-6 pt-4 border-t border-[#EFE7D8]/10 flex items-center justify-between">
               <div>
                 <p className="text-xs text-[#EFE7D8] font-medium">Want similar aesthetic for your campaign?</p>
-                <p className="text-[11px] text-[#C9B89B] font-light">Engage {creator?.name} through Aetheria Escrow</p>
+                <p className="text-[11px] text-[#C9B89B] font-light">Engage {creator?.name} through Nebula Escrow</p>
               </div>
               <button
                 onClick={() => {

@@ -326,7 +326,7 @@ export default function BriefsHub({
 
                   <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-[11px] text-emerald-300">
                     <ShieldCheck className="w-4 h-4 inline mr-1" />
-                    By submitting, you agree to escrow-backed milestone releases and Aetheria Commercial IP Indemnification.
+                    By submitting, you agree to escrow-backed milestone releases and Nebula Commercial IP Indemnification.
                   </div>
                 </div>
 

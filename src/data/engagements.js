@@ -62,7 +62,7 @@ export const INITIAL_ENGAGEMENTS = [
         name: "commercial_rights_certificate_vogue.pdf",
         size: "1.2 MB",
         type: "Legal Indemnity",
-        modelUsed: "Aetheria Escrow Legal",
+        modelUsed: "Nebula Escrow Legal",
         status: "Countersigned"
       }
     ]

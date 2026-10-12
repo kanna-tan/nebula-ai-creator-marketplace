@@ -38,7 +38,7 @@ export default function Navbar({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-cinzel text-xl sm:text-2xl font-bold tracking-[0.2em] text-[#FFFDF9] group-hover:text-white transition-colors">
-                  AETHERIA
+                  NEBULA
                 </span>
                 <span className="text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-full border border-[#D4BC92]/40 bg-[#D4BC92]/10 text-[#F3EAD8] font-mono-code hidden sm:inline-block">
                   AI-Native &bull; ₹ INR

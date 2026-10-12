@@ -53,7 +53,7 @@ export default function PresentationDeck({ isOpen, onClose }) {
           <div className="flex items-center gap-2.5">
             <Presentation className="w-4 h-4 text-[#DFC08D]" />
             <span className="font-cinzel text-sm font-semibold tracking-wider text-[#FDFBF7]">
-              AETHERIA &bull; PLATFORM DEMO & PITCH DECK
+              NEBULA &bull; PLATFORM DEMO & PITCH DECK
             </span>
             <span className="text-[10px] text-[#C9B89B] font-mono-code hidden sm:inline">
               (Use Arrow Keys or Space to navigate)

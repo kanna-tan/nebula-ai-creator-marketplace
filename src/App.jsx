@@ -142,7 +142,7 @@ export default function App() {
                 </div>
                 <div>
                   <span className="font-cinzel text-lg font-bold tracking-[0.2em] text-[#FDFBF7]">
-                    AETHERIA
+                    NEBULA
                   </span>
                   <p className="text-[11px] text-[#C9B89B] tracking-wider uppercase font-light">
                     The Ethereal AI Creator Exchange

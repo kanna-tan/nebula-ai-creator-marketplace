@@ -63,7 +63,7 @@ export default function CreatorDetailModal({
                   />
                   {creator.verificationSignals.workflowVerified && (
                     <div 
-                      title="Verified Pipeline: ComfyUI node graphs verified by Aetheria"
+                      title="Verified Pipeline: ComfyUI node graphs verified by Nebula"
                       className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#08070D] border-2 border-emerald-400 flex items-center justify-center text-emerald-400 shadow-lg"
                     >
                       <ShieldCheck className="w-4 h-4" />
@@ -114,7 +114,7 @@ export default function CreatorDetailModal({
             <div className="p-4 rounded-2xl bg-[#17142B]/80 border border-[#EFE7D8]/15 mb-6 backdrop-blur-md">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#C9B89B] mb-2.5">
                 <Award className="w-4 h-4 text-emerald-400" />
-                <span>Aetheria Cryptographic & Manual Verification Signals</span>
+                <span>Nebula Cryptographic & Manual Verification Signals</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="p-2.5 rounded-xl bg-[#08070D]/50 border border-[#EFE7D8]/10">

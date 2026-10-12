@@ -116,7 +116,7 @@ export default function CreateBriefModal({
                 Creative Brief Published
               </h3>
               <p className="text-sm text-[#C9B89B] max-w-sm mx-auto">
-                Your commission is now listed on Aetheria. Verified creators will begin submitting multi-model pipelines.
+                Your commission is now listed on Nebula. Verified creators will begin submitting multi-model pipelines.
               </p>
             </div>
           ) : (
@@ -231,7 +231,7 @@ export default function CreateBriefModal({
               <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-3">
                 <div className="flex items-center gap-2 text-emerald-300 font-semibold uppercase tracking-wider text-[11px]">
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Commercial-Use & IP Terms (Required by Aetheria)</span>
+                  <span>Commercial-Use & IP Terms (Required by Nebula)</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

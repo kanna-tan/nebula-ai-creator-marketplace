@@ -4,7 +4,7 @@ export const PRESENTATION_SLIDES = [
   {
     slideNumber: 1,
     category: "Vision & Title",
-    title: "AETHERIA",
+    title: "NEBULA",
     subtitle: "The Ethereal AI-Native Creator Marketplace",
     summary: "Connecting visionary brands with verified generative artists through workflow transparency, model verification, and IP-cleared deliverables.",
     points: [
@@ -12,7 +12,7 @@ export const PRESENTATION_SLIDES = [
       "The Brand Trust Gap: Brands want AI content but fear copyright risk, inconsistent outputs, and 'prompt-kiddies'.",
       "The Solution: An AI-native marketplace built on reproducible pipelines, verified toolchains, and structured creative briefs."
     ],
-    tag: "AETHERIA PLATFORM PITCH"
+    tag: "NEBULA PLATFORM PITCH"
   },
   {
     slideNumber: 2,
@@ -30,7 +30,7 @@ export const PRESENTATION_SLIDES = [
   {
     slideNumber: 3,
     category: "Core Solution",
-    title: "Aetheria's AI-Native Marketplace Architecture",
+    title: "Nebula's AI-Native Marketplace Architecture",
     subtitle: "Four Pillars designed specifically for Generative Production.",
     points: [
       "1. Deep AI Portfolios: Every piece showcases tools used, exact prompt engineering, and step-by-step pipeline nodes (e.g. Flux.1 -> ControlNet -> Runway Gen-3 -> Topaz).",
@@ -44,7 +44,7 @@ export const PRESENTATION_SLIDES = [
     slideNumber: 4,
     category: "Bonus Feature 1",
     title: "Creator Verification Signals: Trust by Design",
-    subtitle: "How Aetheria solves the 'Prompt-Kiddie vs Master Director' problem.",
+    subtitle: "How Nebula solves the 'Prompt-Kiddie vs Master Director' problem.",
     points: [
       "Verified Toolchain: Validates active enterprise API keys with Runway, Midjourney, and Flux.",
       "Reproducible Workflow Testing: Creators submit ComfyUI JSON workflows to test node graphs against golden validation prompts.",
@@ -73,7 +73,7 @@ export const PRESENTATION_SLIDES = [
     subtitle: "Monetizing the ₹3.3 Lakh Cr+ generative marketing revolution.",
     points: [
       "12% Marketplace Take Rate: 8% from hiring brands, 4% from creators on completed escrow milestones.",
-      "Aetheria Enterprise Tier: ₹39,999/mo for agency brief matching, private creator talent pools, and automated IP legal indemnification.",
+      "Nebula Enterprise Tier: ₹39,999/mo for agency brief matching, private creator talent pools, and automated IP legal indemnification.",
       "Model API Credits & Tool Bundles: Revenue sharing with AI model providers for in-platform render and compute verification.",
       "Turnkey Production Guarantees: Enterprise SLA for 72-hour turnaround broadcast campaigns."
     ],

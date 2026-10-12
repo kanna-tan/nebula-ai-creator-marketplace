@@ -1,4 +1,4 @@
-# ✨ AETHERIA — Ethereal AI Content Creator Marketplace
+# ✨ NEBULA — Ethereal AI Content Creator Marketplace
 > **Where Generative Vision Meets Celestial Craft**
 > An AI-native marketplace connecting generative creative professionals (AI filmmakers, character architects, neural VFX artists) with enterprise brands and creative agencies.
 
@@ -17,7 +17,7 @@ Generative AI has unleashed a new creative class—AI directors, prompt architec
 - Enforce character identity consistency across multi-scene commercial campaigns.
 - Indemnify enterprise brands against model training copyright risks.
 
-**Aetheria** solves this trust gap by introducing an AI-native marketplace architecture with verified toolchains, reproducible workflow inspection, escrow milestone releases, and an AI-powered brief studio.
+**Nebula** solves this trust gap by introducing an AI-native marketplace architecture with verified toolchains, reproducible workflow inspection, escrow milestone releases, and an AI-powered brief studio.
 
 ---
 

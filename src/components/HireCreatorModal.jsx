@@ -77,7 +77,7 @@ export default function HireCreatorModal({
           name: 'project_brief_and_references.pdf',
           size: '4.2 MB',
           type: 'Project Brief',
-          modelUsed: 'Aetheria Contract',
+          modelUsed: 'Nebula Contract',
           status: 'Attached'
         }
       ]
@@ -187,7 +187,7 @@ export default function HireCreatorModal({
               <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-[11px] text-emerald-300 space-y-1">
                 <div className="font-semibold flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Aetheria Escrow Protection</span>
+                  <span>Nebula Escrow Protection</span>
                 </div>
                 <p className="text-[#C9B89B]">
                   Your funds are locked in smart escrow. Payouts are only released when you approve each milestone's video cutdown and generation seed logs.

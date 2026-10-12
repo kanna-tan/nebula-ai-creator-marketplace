@@ -1,9 +1,9 @@
-// Formal Data Model Architecture Specification for Aetheria Platform
+// Formal Data Model Architecture Specification for Nebula Platform
 
 export const DATA_MODEL_SPEC = {
   overview: {
     title: "AI-Native Marketplace Data Architecture",
-    description: "Traditional freelance schemas fail to capture the technical nuances of generative AI production—such as model checkpoints, latent seed reproducibility, ControlNet conditioning, and copyright indemnity. The Aetheria schema was engineered from the ground up for generative workflows.",
+    description: "Traditional freelance schemas fail to capture the technical nuances of generative AI production—such as model checkpoints, latent seed reproducibility, ControlNet conditioning, and copyright indemnity. The Nebula schema was engineered from the ground up for generative workflows.",
     version: "2.4.0-celestial",
     lastUpdated: "October 2026"
   },

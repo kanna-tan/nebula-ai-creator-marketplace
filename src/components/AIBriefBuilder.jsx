@@ -63,7 +63,7 @@ export default function AIBriefBuilder({ onPublishBrief }) {
       const title = isAuto 
         ? "Apex Solaria: Celestial EV Premiere Commercial"
         : isFashion 
-        ? "Aetheria Couture: Starlight Fashion Narrative"
+        ? "Nebula Couture: Starlight Fashion Narrative"
         : "Aura Céleste: Mystical Ethereal Perfume Launch";
 
       const toolStack = isAuto
