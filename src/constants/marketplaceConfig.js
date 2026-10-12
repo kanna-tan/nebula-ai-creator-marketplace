@@ -715,3 +715,84 @@ export const DECK_MODAL_CONFIG = {
   slideCounterPrefix: 'Slide',
   slideCounterSeparator: 'of'
 };
+
+export const AUTH_CONFIG = {
+  storageKey: 'nebula_auth_session',
+  modes: {
+    SIGN_IN: 'signin',
+    SIGN_UP: 'signup'
+  },
+  badge: 'Celestial Member Access',
+  signInTitle: 'Enter the Nebula Exchange',
+  signUpTitle: 'Create Your Nebula Pass',
+  subtitle:
+    'Sign in to commission verified AI directors, inspect ComfyUI node graphs, and manage ₹ INR milestone escrows.',
+  tabs: {
+    signIn: 'Sign In',
+    signUp: 'Create Account'
+  },
+  labels: {
+    name: 'Full Name or Studio Name',
+    email: 'Email Address',
+    password: 'Password / Passkey',
+    accountType: 'Account Workspace',
+    rememberMe: 'Keep session active on this device',
+    signOutBtn: 'Sign Out',
+    signOutTooltip: 'Sign out of Nebula'
+  },
+  placeholders: {
+    name: 'e.g. Kanna / Lumina Studio',
+    email: 'name@studio.com',
+    password: '••••••••••••'
+  },
+  accountTypes: ['Brand / Agency', 'AI Creator / Director'],
+  submitSignInBtn: 'Sign In to Nebula',
+  submitSignUpBtn: 'Create Account & Enter',
+  quickAccessLabel: 'Or Instant 1-Click Demo Login',
+  quickAccounts: [
+    {
+      id: 'demo-brand',
+      label: 'Brand Director Demo',
+      sublabel: 'Post briefs & fund ₹ INR escrow',
+      name: 'Lumina Atelier',
+      email: 'director@lumina.studio',
+      accountType: 'Brand / Agency'
+    },
+    {
+      id: 'demo-creator',
+      label: 'AI Creator Demo',
+      sublabel: 'Showcase ComfyUI nodes & bid',
+      name: 'Elena Rostova',
+      email: 'elena@nebula.exchange',
+      accountType: 'AI Creator / Director'
+    }
+  ],
+  securityNote: 'Encrypted Session • Commercial IP & Smart Escrow Enabled'
+};
+
+export function buildUserFromAuth({ name, email, accountType }) {
+  const cleanEmail = (email || '').trim();
+  const derivedName =
+    (name || '').trim() ||
+    cleanEmail
+      .split('@')[0]
+      .replace(/[._-]/g, ' ')
+      .replace(/\b\w/g, (l) => l.toUpperCase()) ||
+    BRAND_CONFIG.defaultBrandName;
+
+  const initials = derivedName
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+
+  return {
+    name: derivedName,
+    email: cleanEmail,
+    accountType: accountType || AUTH_CONFIG.accountTypes[0],
+    initials: initials || BRAND_CONFIG.logoMark,
+    signedInAt: new Date().toISOString()
+  };
+}
+

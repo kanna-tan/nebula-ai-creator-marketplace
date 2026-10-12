@@ -7,14 +7,16 @@ import {
   Layers,
   FileCode,
   Presentation,
-  Palette
+  Palette,
+  LogOut
 } from 'lucide-react';
 import {
   BRAND_CONFIG,
   TABS,
   NAV_ITEMS,
   COLOR_GRADES,
-  NAVBAR_TEXT
+  NAVBAR_TEXT,
+  AUTH_CONFIG
 } from '../constants/marketplaceConfig';
 import NebulaLogo from './NebulaLogo';
 
@@ -32,7 +34,9 @@ export default function Navbar({
   onOpenDataModel,
   onOpenDeck,
   colorGrade,
-  setColorGrade
+  setColorGrade,
+  currentUser,
+  onSignOut
 }) {
   const cycleColorGrade = () => {
     const currentIndex = COLOR_GRADES.ORDER.indexOf(colorGrade);
@@ -45,7 +49,7 @@ export default function Navbar({
   return (
     <header className="sticky top-0 z-40 backdrop-blur-2xl bg-[#06050a]/85 border-b border-[#f3ead8]/15 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-4">
+        <div className="flex items-center justify-between h-20 gap-3">
           
           {/* Celestial Logo & Brand */}
           <div
@@ -72,7 +76,7 @@ export default function Navbar({
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium tracking-wide transition-all whitespace-nowrap relative ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium tracking-wide transition-all whitespace-nowrap relative ${
                     isActive
                       ? 'bg-[#FFFDF9]/15 text-[#FFFDF9] border border-[#F3EAD8]/40 shadow-[0_0_15px_rgba(243,234,216,0.15)] font-semibold'
                       : 'text-[#E5D7BE]/70 hover:text-[#FFFDF9] hover:bg-[#FFFDF9]/5'
@@ -98,7 +102,7 @@ export default function Navbar({
           </nav>
 
           {/* Right Action Cluster */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             
             {/* Color Grading Preset Selector */}
             <button
@@ -107,7 +111,7 @@ export default function Navbar({
               className="px-2.5 py-1.5 rounded-xl text-xs font-medium border border-[#F3EAD8]/20 bg-[#FFFDF9]/5 hover:bg-[#FFFDF9]/15 text-[#F3EAD8] flex items-center gap-1.5 transition-all shadow-sm whitespace-nowrap"
             >
               <Palette className="w-3.5 h-3.5 text-[#D4BC92] shrink-0" />
-              <span className="hidden lg:inline text-[11px] font-mono-code">
+              <span className="hidden xl:inline text-[11px] font-mono-code">
                 {activePreset.icon} {activePreset.badge}
               </span>
             </button>
@@ -119,7 +123,7 @@ export default function Navbar({
               className="p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-medium border border-[#F3EAD8]/20 bg-[#FFFDF9]/5 hover:bg-[#FFFDF9]/10 text-[#F3EAD8] flex items-center gap-1.5 transition-all whitespace-nowrap"
             >
               <FileCode className="w-3.5 h-3.5 text-[#D4BC92] shrink-0" />
-              <span className="hidden sm:inline">{NAVBAR_TEXT.dataModelBtn}</span>
+              <span className="hidden lg:inline">{NAVBAR_TEXT.dataModelBtn}</span>
             </button>
 
             {/* Pitch & Presentation Slides Button */}
@@ -129,7 +133,7 @@ export default function Navbar({
               className="p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-medium border border-[#F3EAD8]/20 bg-[#FFFDF9]/5 hover:bg-[#FFFDF9]/10 text-[#F3EAD8] flex items-center gap-1.5 transition-all whitespace-nowrap"
             >
               <Presentation className="w-3.5 h-3.5 text-[#D4BC92] shrink-0" />
-              <span className="hidden sm:inline">{NAVBAR_TEXT.pitchSlidesBtn}</span>
+              <span className="hidden lg:inline">{NAVBAR_TEXT.pitchSlidesBtn}</span>
             </button>
 
             {/* Post Brief Action Button */}
@@ -140,6 +144,31 @@ export default function Navbar({
               <PlusCircle className="w-4 h-4 shrink-0" />
               <span>{NAVBAR_TEXT.postBriefBtn}</span>
             </button>
+
+            {/* Signed-In User Pill & Sign Out Button */}
+            {currentUser && (
+              <div className="flex items-center gap-1.5 pl-1.5 border-l border-[#F3EAD8]/15">
+                <div
+                  title={`${currentUser.name} (${currentUser.accountType})`}
+                  className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-[#FFFDF9]/5 border border-[#F3EAD8]/20 text-xs text-[#FFFDF9] whitespace-nowrap"
+                >
+                  <span className="w-5 h-5 rounded-full bg-gradient-to-br from-[#FFFDF9] to-[#D4BC92] text-[#08070D] font-bold text-[10px] flex items-center justify-center shrink-0">
+                    {currentUser.initials}
+                  </span>
+                  <span className="max-w-[90px] truncate font-medium">
+                    {currentUser.name}
+                  </span>
+                </div>
+
+                <button
+                  onClick={onSignOut}
+                  title={AUTH_CONFIG.labels.signOutTooltip}
+                  className="p-2 rounded-xl border border-[#F3EAD8]/20 bg-[#FFFDF9]/5 hover:bg-rose-500/20 hover:border-rose-400/40 text-[#D4BC92] hover:text-rose-200 transition-all flex items-center gap-1 text-xs whitespace-nowrap"
+                >
+                  <LogOut className="w-3.5 h-3.5 shrink-0" />
+                </button>
+              </div>
+            )}
           </div>
 
         </div>
