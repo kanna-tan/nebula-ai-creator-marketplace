@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --cream-50: #fffdfa;
+    --cream-100: #faf5ea;
+    --cream-200: #f3ead8;
+    --cream-300: #e5d7be;
+    --cream-400: #d4bc92;
+    --cream-500: #b89a63;
+    --cream-muted: #a39580;
+    --space-950: #06050a;
+    --space-900: #0b0814;
+    --space-800: #130e23;
+    --space-700: #1d1633;
+    --space-600: #2a2047;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #06050a;
+    color: #f3ead8;
+  }
+
+  h1, h2, h3, .font-serif-celestial {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+
+  .font-mono-code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Special Galaxy & Starlight Animations */
+@keyframes nebulaGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.1) translate(20px, -15px);
+  }
+}
+
+@keyframes celestialFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes stardustTwinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.25); filter: drop-shadow(0 0 3px rgba(255, 253, 249, 0.9)); }
+}
+
+@keyframes shootingStar {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg) scaleX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(100px) translateY(100px) rotate(-45deg) scaleX(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(450px) translateY(450px) rotate(-45deg) scaleX(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(650px) translateY(650px) rotate(-45deg) scaleX(0.2);
+  }
+}
+
+.animate-nebula {
+  animation: nebulaGlow 12s ease-in-out infinite alternate;
+}
+
+.animate-celestial {
+  animation: celestialFloat 6s ease-in-out infinite;
+}
+
+.animate-stardust {
+  animation: stardustTwinkle 3.5s ease-in-out infinite;
+}
+
+/* Special Color Grading Classes */
+.gold-cream-text {
+  background: linear-gradient(135deg, #FFFDF9 0%, #F5EEDB 45%, #D4BC92 80%, #B89A63 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aurora-cream-text {
+  background: linear-gradient(135deg, #FFFDF9 0%, #E2F1ED 40%, #E0D0F5 80%, #D4BC92 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Special Luxury Cream Glassmorphism */
+.cream-glass-luxury {
+  background: rgba(15, 11, 26, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(243, 234, 216, 0.16);
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.6),
+    0 0 20px -5px rgba(212, 188, 146, 0.08),
+    inset 0 1px 0 0 rgba(255, 253, 250, 0.15);
+}
+
+.cream-glass-luxury:hover {
+  border-color: rgba(243, 234, 216, 0.35);
+  box-shadow: 
+    0 15px 50px -10px rgba(0, 0, 0, 0.7),
+    0 0 30px -5px rgba(212, 188, 146, 0.18),
+    inset 0 1px 0 0 rgba(255, 253, 250, 0.3);
+}
+
+.special-glow-button {
+  background: linear-gradient(135deg, #FFFDF9 0%, #F5EEDB 50%, #E5D7BE 100%);
+  color: #06050a;
+  box-shadow: 0 0 25px rgba(243, 234, 216, 0.35), 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.special-glow-button:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #FFFDF9 50%, #F5EEDB 100%);
+  box-shadow: 0 0 35px rgba(243, 234, 216, 0.55), 0 4px 8px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #06050a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(243, 234, 216, 0.22);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(243, 234, 216, 0.45);
+}
