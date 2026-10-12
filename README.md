@@ -97,10 +97,10 @@ Generative AI has unleashed a new creative class—AI directors, prompt architec
 
 ```bash
 # Clone the repository
-git clone https://github.com/kannanekkanti-glitch/aetheria-ai-marketplace.git
+git clone https://github.com/kannanekkanti-glitch/nebula-ai-creator-marketplace.git
 
 # Navigate to project directory
-cd aetheria-ai-marketplace
+cd nebula-ai-creator-marketplace
 
 # Install dependencies
 npm install
