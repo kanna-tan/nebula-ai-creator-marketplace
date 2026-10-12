@@ -20,16 +20,14 @@ import { INITIAL_ENGAGEMENTS } from './data/engagements';
 import {
   BRAND_CONFIG,
   TABS,
-  USER_ROLES,
   COLOR_GRADES,
   DIRECTORY_CONFIG
 } from './constants/marketplaceConfig';
 import { Sparkles, FileCode, Presentation } from 'lucide-react';
 
 export default function App() {
-  // Navigation & Role State
+  // Navigation State
   const [activeTab, setActiveTab] = useState(TABS.CREATORS);
-  const [userRole, setUserRole] = useState(USER_ROLES.BRAND);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Core Data State
@@ -82,8 +80,6 @@ export default function App() {
           onOpenCreateBrief={() => setIsCreateBriefOpen(true)}
           onOpenDataModel={() => setIsDataModelOpen(true)}
           onOpenDeck={() => setIsDeckOpen(true)}
-          userRole={userRole}
-          setUserRole={setUserRole}
           colorGrade={colorGrade}
           setColorGrade={setColorGrade}
         />
@@ -120,7 +116,6 @@ export default function App() {
               creators={creators}
               onOpenCreateBrief={() => setIsCreateBriefOpen(true)}
               onOpenAiStudio={() => setActiveTab(TABS.AI_BUILDER)}
-              userRole={userRole}
             />
           )}
 

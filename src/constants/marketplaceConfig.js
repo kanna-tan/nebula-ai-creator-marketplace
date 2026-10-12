@@ -5,14 +5,13 @@ import { BRIEF_TEMPLATES } from '../data/briefs';
 
 export const BRAND_CONFIG = {
   name: 'NEBULA',
-  tagline: 'The Ethereal AI Creator Exchange',
+  tagline: 'The Ethereal Creator Exchange',
   logoMark: 'N',
   logoIcon: 'N',
   currencySymbol: '₹',
   currencyCode: 'INR',
   currencyLocale: 'en-IN',
-  headerBadge: 'AI-Native • ₹ INR',
-  footerNote: 'Designed for AI-Native Production • 2026',
+  footerNote: 'Designed for Celestial Creative Production • 2026',
   defaultBrandName: 'Lumina Atelier',
   defaultBrandLogo: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=150&q=80',
   footerLinks: {
@@ -58,16 +57,6 @@ export const NAV_ITEMS = [
   }
 ];
 
-export const USER_ROLES = {
-  BRAND: 'brand',
-  CREATOR: 'creator'
-};
-
-export const ROLE_OPTIONS = [
-  { id: USER_ROLES.BRAND, label: 'Brand', iconKey: 'briefcase' },
-  { id: USER_ROLES.CREATOR, label: 'Creator', iconKey: 'userCheck' }
-];
-
 export const COLOR_GRADES = {
   ORDER: ['champagne', 'amethyst', 'aurora'],
   PRESETS: {
@@ -90,7 +79,7 @@ export const NAVBAR_TEXT = {
 };
 
 export const HERO_CONFIG = {
-  pillBadge: 'AI-Native Creative Economy • ₹ INR Settlements',
+  pillBadge: 'The Celestial Creative Economy • ₹ INR Settlements',
   headlineLine1: 'Where Generative Vision',
   headlineHighlight: 'Meets Celestial Craft',
   subtitle:
