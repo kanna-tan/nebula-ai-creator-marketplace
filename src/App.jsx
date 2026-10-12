@@ -16,28 +16,35 @@ import HireCreatorModal from './components/HireCreatorModal';
 import { CREATORS } from './data/creators';
 import { INITIAL_BRIEFS } from './data/briefs';
 import { INITIAL_ENGAGEMENTS } from './data/engagements';
-import { Sparkles, Shield, Compass, FileCode, Presentation, Heart } from 'lucide-react';
+import {
+  BRAND_CONFIG,
+  TABS,
+  USER_ROLES,
+  COLOR_GRADES,
+  DIRECTORY_CONFIG
+} from './constants/marketplaceConfig';
+import { Sparkles, FileCode, Presentation } from 'lucide-react';
 
 export default function App() {
   // Navigation & Role State
-  const [activeTab, setActiveTab] = useState('creators'); // 'creators', 'briefs', 'ai-builder', 'engagements'
-  const [userRole, setUserRole] = useState('brand'); // 'brand', 'creator'
+  const [activeTab, setActiveTab] = useState(TABS.CREATORS);
+  const [userRole, setUserRole] = useState(USER_ROLES.BRAND);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Core Data State
-  const [creators, setCreators] = useState(CREATORS);
+  const [creators] = useState(CREATORS);
   const [briefs, setBriefs] = useState(INITIAL_BRIEFS);
   const [engagements, setEngagements] = useState(INITIAL_ENGAGEMENTS);
 
   // Modal States
   const [selectedCreator, setSelectedCreator] = useState(null);
-  const [selectedPortfolio, setSelectedPortfolio] = useState(null); // { item, creator }
+  const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [isCreateBriefOpen, setIsCreateBriefOpen] = useState(false);
   const [isDataModelOpen, setIsDataModelOpen] = useState(false);
   const [isDeckOpen, setIsDeckOpen] = useState(false);
   const [hireTargetCreator, setHireTargetCreator] = useState(null);
 
-  const [colorGrade, setColorGrade] = useState('champagne'); // 'champagne', 'amethyst', 'aurora'
+  const [colorGrade, setColorGrade] = useState(COLOR_GRADES.ORDER[0]);
 
   // Handlers
   const handleSelectPortfolioItem = (item, creator) => {
@@ -50,12 +57,12 @@ export default function App() {
 
   const handlePublishBrief = (newBrief) => {
     setBriefs((prev) => [newBrief, ...prev]);
-    setActiveTab('briefs');
+    setActiveTab(TABS.BRIEFS);
   };
 
   const handleEngagementCreated = (newEngagement) => {
     setEngagements((prev) => [newEngagement, ...prev]);
-    setActiveTab('engagements');
+    setActiveTab(TABS.ENGAGEMENTS);
   };
 
   return (
@@ -82,19 +89,19 @@ export default function App() {
 
         {/* Main Content Area Based on Active Tab */}
         <main className="flex-1">
-          {activeTab === 'creators' && (
+          {activeTab === TABS.CREATORS && (
             <>
               <HeroBanner
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 onExploreClick={() => {
-                  const element = document.getElementById('creators-section');
+                  const element = document.getElementById(DIRECTORY_CONFIG.sectionId);
                   if (element) element.scrollIntoView({ behavior: 'smooth' });
                 }}
-                onAiStudioClick={() => setActiveTab('ai-builder')}
+                onAiStudioClick={() => setActiveTab(TABS.AI_BUILDER)}
               />
 
-              <div id="creators-section">
+              <div id={DIRECTORY_CONFIG.sectionId}>
                 <CreatorDirectory
                   creators={creators}
                   searchQuery={searchQuery}
@@ -106,26 +113,27 @@ export default function App() {
             </>
           )}
 
-          {activeTab === 'briefs' && (
+          {activeTab === TABS.BRIEFS && (
             <BriefsHub
               briefs={briefs}
+              creators={creators}
               onOpenCreateBrief={() => setIsCreateBriefOpen(true)}
-              onOpenAiStudio={() => setActiveTab('ai-builder')}
+              onOpenAiStudio={() => setActiveTab(TABS.AI_BUILDER)}
               userRole={userRole}
             />
           )}
 
-          {activeTab === 'ai-builder' && (
+          {activeTab === TABS.AI_BUILDER && (
             <AIBriefBuilder
               onPublishBrief={handlePublishBrief}
             />
           )}
 
-          {activeTab === 'engagements' && (
+          {activeTab === TABS.ENGAGEMENTS && (
             <EngagementsTracker
               engagements={engagements}
               onUpdateEngagement={(updated) => {
-                setEngagements(prev => prev.map(e => e.id === updated.id ? updated : e));
+                setEngagements((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
               }}
             />
           )}
@@ -138,14 +146,14 @@ export default function App() {
               
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FDFBF7]/20 to-[#C9B89B]/10 border border-[#EFE7D8]/30 flex items-center justify-center">
-                  <span>✨</span>
+                  <span>{BRAND_CONFIG.logoIcon}</span>
                 </div>
                 <div>
                   <span className="font-cinzel text-lg font-bold tracking-[0.2em] text-[#FDFBF7]">
-                    NEBULA
+                    {BRAND_CONFIG.name}
                   </span>
                   <p className="text-[11px] text-[#C9B89B] tracking-wider uppercase font-light">
-                    The Ethereal AI Creator Exchange
+                    {BRAND_CONFIG.tagline}
                   </p>
                 </div>
               </div>
@@ -156,7 +164,7 @@ export default function App() {
                   className="hover:text-[#FDFBF7] transition-colors flex items-center gap-1.5"
                 >
                   <FileCode className="w-3.5 h-3.5" />
-                  <span>Data Model Architecture Spec</span>
+                  <span>{BRAND_CONFIG.footerLinks.dataModel}</span>
                 </button>
                 &bull;
                 <button
@@ -164,20 +172,20 @@ export default function App() {
                   className="hover:text-[#FDFBF7] transition-colors flex items-center gap-1.5"
                 >
                   <Presentation className="w-3.5 h-3.5" />
-                  <span>Pitch & Demo Slides</span>
+                  <span>{BRAND_CONFIG.footerLinks.pitchDeck}</span>
                 </button>
                 &bull;
                 <button
-                  onClick={() => setActiveTab('ai-builder')}
+                  onClick={() => setActiveTab(TABS.AI_BUILDER)}
                   className="hover:text-[#FDFBF7] transition-colors flex items-center gap-1.5"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Bonus AI Brief Builder</span>
+                  <span>{BRAND_CONFIG.footerLinks.aiBuilder}</span>
                 </button>
               </div>
 
               <div className="text-center sm:text-right text-xs text-[#C9B89B]/80 font-mono-code">
-                <span>Designed for AI-Native Production &bull; 2026</span>
+                <span>{BRAND_CONFIG.footerNote}</span>
               </div>
 
             </div>
@@ -187,8 +195,6 @@ export default function App() {
       </div>
 
       {/* Global Interactive Modals */}
-      
-      {/* 1. Creator Detail Profile Modal */}
       {selectedCreator && (
         <CreatorDetailModal
           creator={selectedCreator}
@@ -198,7 +204,6 @@ export default function App() {
         />
       )}
 
-      {/* 2. Portfolio Item Deep Inspection Modal */}
       {selectedPortfolio && (
         <PortfolioDetailModal
           item={selectedPortfolio.item}
@@ -208,26 +213,22 @@ export default function App() {
         />
       )}
 
-      {/* 3. Manual Create Brief Modal */}
       <CreateBriefModal
         isOpen={isCreateBriefOpen}
         onClose={() => setIsCreateBriefOpen(false)}
         onPublishBrief={handlePublishBrief}
       />
 
-      {/* 4. Data Model Architecture Deliverable Modal */}
       <DataModelModal
         isOpen={isDataModelOpen}
         onClose={() => setIsDataModelOpen(false)}
       />
 
-      {/* 5. Pitch & Presentation Deck Deliverable Modal */}
       <PresentationDeck
         isOpen={isDeckOpen}
         onClose={() => setIsDeckOpen(false)}
       />
 
-      {/* 6. Hire Creator Escrow Modal */}
       <HireCreatorModal
         creator={hireTargetCreator}
         briefs={briefs}

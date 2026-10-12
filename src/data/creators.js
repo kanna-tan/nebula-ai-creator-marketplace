@@ -61,7 +61,14 @@ export const CREATORS = [
           { step: "04 Mastering & Audio", model: "Topaz Video AI + ElevenLabs Soundscapes", notes: "Upscaled to 4K DCI; synchronized ethereal cosmic chime audio track." }
         ],
         tags: ["Haute Perfume", "Cosmic Luxury", "Fluid Dynamics", "4K HDR"],
-        likes: 342
+        likes: 342,
+        generationParams: {
+          seed: "#94821037",
+          sampler: "Euler a",
+          cfgScale: "3.5",
+          steps: "40",
+          currentTime: "0:18"
+        }
       },
       {
         id: "port-2",
@@ -82,7 +89,14 @@ export const CREATORS = [
           { step: "03 Color Grading", model: "DaVinci Resolve ACEScc", notes: "Tuned warm cream and starlight gold luminance curves." }
         ],
         tags: ["Fashion Runway", "Consistent Models", "Textile Physics"],
-        likes: 512
+        likes: 512,
+        generationParams: {
+          seed: "#77419022",
+          sampler: "DPM++ 2M Karras",
+          cfgScale: "6.0",
+          steps: "35",
+          currentTime: "0:29"
+        }
       },
       {
         id: "port-3",
@@ -103,7 +117,14 @@ export const CREATORS = [
           { step: "03 Texture Halation", model: "Magnific AI Upscaler", notes: "Micro-scratches, metal brushing, and authentic light dispersion." }
         ],
         tags: ["Luxury Horology", "Product Render", "Hard Surface AI"],
-        likes: 289
+        likes: 289,
+        generationParams: {
+          seed: "#11904856",
+          sampler: "Heun",
+          cfgScale: "4.0",
+          steps: "50",
+          currentTime: "0:00"
+        }
       }
     ]
   },
@@ -166,7 +187,14 @@ export const CREATORS = [
           { step: "03 Synthetic Sound Design", model: "ElevenLabs + ProTools", notes: "Synthesized ionic propulsion audio and ambient cosmic frequencies." }
         ],
         tags: ["Automotive", "High Speed Motion", "Sci-Fi Realism"],
-        likes: 671
+        likes: 671,
+        generationParams: {
+          seed: "#60384912",
+          sampler: "UniPC",
+          cfgScale: "5.5",
+          steps: "42",
+          currentTime: "0:12"
+        }
       },
       {
         id: "port-5",
@@ -186,7 +214,14 @@ export const CREATORS = [
           { step: "02 Light Infilling", model: "Flux.1 Inpainting", notes: "Tuned ambient occlusion and floor-to-ceiling glass reflections." }
         ],
         tags: ["Architecture", "Travertine & Glass", "Minimalism"],
-        likes: 418
+        likes: 418,
+        generationParams: {
+          seed: "#39201844",
+          sampler: "DPM++ SDE",
+          cfgScale: "4.5",
+          steps: "36",
+          currentTime: "0:00"
+        }
       }
     ]
   },
@@ -249,7 +284,14 @@ export const CREATORS = [
           { step: "03 Motion Generation", model: "Runway Gen-3 LipSync & Motion", notes: "Applied natural micro-expressions, blinks, and subtle breathing motion." }
         ],
         tags: ["Skincare", "Virtual Influencer", "Identity Lock"],
-        likes: 890
+        likes: 890,
+        generationParams: {
+          seed: "#88412095",
+          sampler: "Euler a",
+          cfgScale: "3.8",
+          steps: "32",
+          currentTime: "0:21"
+        }
       },
       {
         id: "port-7",
@@ -269,7 +311,14 @@ export const CREATORS = [
           { step: "02 Temporal Consistency", model: "AnimateDiff Lightning + LCM", notes: "Zero flickering across 240 frames." }
         ],
         tags: ["Cinematic Anime", "Cosmic Fantasy", "AnimateDiff"],
-        likes: 645
+        likes: 645,
+        generationParams: {
+          seed: "#51092834",
+          sampler: "LCM",
+          cfgScale: "2.0",
+          steps: "16",
+          currentTime: "0:34"
+        }
       }
     ]
   },
@@ -330,7 +379,14 @@ export const CREATORS = [
           { step: "02 Frequency Latent Modulation", model: "Deforum SD Audio Reactive Hook", notes: "Sub-bass routed to zoom parameter; high hats routed to prompt weight." }
         ],
         tags: ["Audioreactive", "Exhibition", "Ambient Cosmic"],
-        likes: 421
+        likes: 421,
+        generationParams: {
+          seed: "#44019283",
+          sampler: "Euler Ancestral",
+          cfgScale: "7.0",
+          steps: "45",
+          currentTime: "0:42"
+        }
       }
     ]
   },
@@ -391,7 +447,14 @@ export const CREATORS = [
           { step: "02 Gemstone Refraction Enhancement", model: "Magnific AI Sub-Surface Polish", notes: "Crisp internal diamond facet dispersion without digital noise." }
         ],
         tags: ["High Jewelry", "Editorial Still", "Luxury Billboard"],
-        likes: 730
+        likes: 730,
+        generationParams: {
+          seed: "#20948173",
+          sampler: "DPM++ 2M",
+          cfgScale: "3.5",
+          steps: "48",
+          currentTime: "0:00"
+        }
       }
     ]
   },
@@ -454,7 +517,14 @@ export const CREATORS = [
           { step: "03 Sound & Master Delivery", model: "4K ProRes 422 HQ + ASMR Audio", notes: "Custom crystal clink & liquid pour foley." }
         ],
         tags: ["Beverage Commercial", "Liquid Simulation", "Broadcast 4K"],
-        likes: 540
+        likes: 540,
+        generationParams: {
+          seed: "#67103948",
+          sampler: "Euler a",
+          cfgScale: "4.2",
+          steps: "38",
+          currentTime: "0:14"
+        }
       }
     ]
   }

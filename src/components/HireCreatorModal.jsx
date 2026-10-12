@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { 
-  X, 
-  Send, 
-  ShieldCheck, 
-  CheckCircle2, 
-  DollarSign, 
-  Clock, 
-  Sparkles,
-  Layers
+import React, { useState, useEffect } from 'react';
+import {
+  X,
+  Send,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import {
+  HIRE_MODAL_CONFIG,
+  buildEngagementFromHire
+} from '../constants/marketplaceConfig';
 
 export default function HireCreatorModal({
   creator,
@@ -19,69 +19,31 @@ export default function HireCreatorModal({
   onEngagementCreated
 }) {
   const [selectedBriefId, setSelectedBriefId] = useState(briefs[0]?.id || '');
-  const [contractBudget, setContractBudget] = useState(creator?.startingProjectRate || '₹2,50,000');
-  const [milestoneNotes, setMilestoneNotes] = useState('Production of 45-second 4K master, 3x vertical cutdowns, and raw ComfyUI generation seed manifest.');
+  const [contractBudget, setContractBudget] = useState(creator?.startingProjectRate || '');
+  const [milestoneNotes, setMilestoneNotes] = useState(HIRE_MODAL_CONFIG.defaultScopeNotes);
   const [submitted, setSubmitted] = useState(false);
+
+  // Sync default contract rate whenever a new creator is selected
+  useEffect(() => {
+    if (creator) {
+      setContractBudget(creator.startingProjectRate);
+      setSelectedBriefId(briefs[0]?.id || '');
+      setMilestoneNotes(HIRE_MODAL_CONFIG.defaultScopeNotes);
+    }
+  }, [creator, briefs]);
 
   if (!isOpen || !creator) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const selectedBrief = briefs.find(b => b.id === selectedBriefId);
-
-    const newEngagement = {
-      id: `eng-${Date.now()}`,
-      campaignTitle: selectedBrief ? selectedBrief.title : `Commission with ${creator.name}`,
-      client: selectedBrief ? selectedBrief.brand : 'Lumina Studio Brand',
-      creator: {
-        name: creator.name,
-        handle: creator.handle,
-        avatar: creator.avatar
-      },
-      totalBudget: contractBudget,
-      escrowStatus: `100% Escrow Funded (${contractBudget} locked)`,
-      stage: 'Milestone 1: Moodboards & Keyframe Latents',
-      currentStepIndex: 1,
-      progressPercent: 20,
-      dueDate: '14 days',
-      deliverablesSpec: '4K Master + Prompt Seeds + Commercial Indemnity',
-      milestones: [
-        {
-          id: 'm1',
-          title: 'Keyframe Aesthetics & Character Identity Lock',
-          status: 'In Progress',
-          payout: '₹85,000',
-          date: 'Day 3',
-          notes: 'Generating initial keyframe latent batch for client approval.'
-        },
-        {
-          id: 'm2',
-          title: 'Motion Synthesis & Interpolation Pass',
-          status: 'Pending',
-          payout: '₹85,000',
-          date: 'Day 8',
-          notes: 'Runway / Kling motion passes and frame stabilization.'
-        },
-        {
-          id: 'm3',
-          title: '4K Topaz Master & IP Transfer',
-          status: 'Pending',
-          payout: '₹85,000',
-          date: 'Day 14',
-          notes: 'Final master export and copyright certificate execution.'
-        }
-      ],
-      submissionAssets: [
-        {
-          name: 'project_brief_and_references.pdf',
-          size: '4.2 MB',
-          type: 'Project Brief',
-          modelUsed: 'Nebula Contract',
-          status: 'Attached'
-        }
-      ]
-    };
+    const selectedBrief = briefs.find((b) => b.id === selectedBriefId);
+    const newEngagement = buildEngagementFromHire({
+      creator,
+      selectedBrief,
+      contractBudget,
+      milestoneNotes
+    });
 
     onEngagementCreated(newEngagement);
     setSubmitted(true);
@@ -101,17 +63,17 @@ export default function HireCreatorModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 backdrop-blur-2xl bg-black/80">
-      <div 
+      <div
         className="relative w-full max-w-lg bg-[#0F0C1B] border border-[#EFE7D8]/20 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#EFE7D8]/10 bg-[#120F1D]">
           <div>
             <h3 className="font-serif-celestial text-xl text-[#FDFBF7] font-medium">
-              Engage {creator.name}
+              {HIRE_MODAL_CONFIG.titlePrefix} {creator.name}
             </h3>
             <p className="text-xs text-[#C9B89B] font-light">
-              Fund milestone escrow with automated IP rights transfer.
+              {HIRE_MODAL_CONFIG.subtitle}
             </p>
           </div>
           <button
@@ -129,10 +91,10 @@ export default function HireCreatorModal({
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h4 className="font-serif-celestial text-2xl text-[#FDFBF7] font-normal mb-1">
-                Engagement Initialized!
+                {HIRE_MODAL_CONFIG.successTitle}
               </h4>
               <p className="text-xs sm:text-sm text-[#C9B89B]">
-                Escrow funds reserved. Redirecting to your active Engagements tracker...
+                {HIRE_MODAL_CONFIG.successSubtitle}
               </p>
             </div>
           ) : (
@@ -140,7 +102,7 @@ export default function HireCreatorModal({
               
               <div>
                 <label className="block text-[#C9B89B] mb-1 font-semibold">
-                  Link Existing Campaign Brief
+                  {HIRE_MODAL_CONFIG.briefSelectLabel}
                 </label>
                 <select
                   value={selectedBriefId}
@@ -157,7 +119,7 @@ export default function HireCreatorModal({
 
               <div>
                 <label className="block text-[#C9B89B] mb-1 font-semibold">
-                  Contract Rate & Escrow Deposit
+                  {HIRE_MODAL_CONFIG.rateLabel}
                 </label>
                 <input
                   type="text"
@@ -165,16 +127,17 @@ export default function HireCreatorModal({
                   value={contractBudget}
                   onChange={(e) => setContractBudget(e.target.value)}
                   className="w-full bg-[#08070D] border border-[#EFE7D8]/20 rounded-xl px-3 py-2 text-[#FDFBF7] font-semibold"
-                  placeholder="e.g. ₹2,50,000"
+                  placeholder={HIRE_MODAL_CONFIG.ratePlaceholder}
                 />
                 <p className="text-[10px] text-[#C9B89B] mt-1 font-light">
-                  Creator's base starting rate: {creator.startingProjectRate} ({creator.hourlyRate})
+                  {HIRE_MODAL_CONFIG.baseRatePrefix} {creator.startingProjectRate} (
+                  {creator.hourlyRate})
                 </p>
               </div>
 
               <div>
                 <label className="block text-[#C9B89B] mb-1 font-semibold">
-                  Scope of Work & Deliverables
+                  {HIRE_MODAL_CONFIG.scopeLabel}
                 </label>
                 <textarea
                   rows={3}
@@ -187,11 +150,9 @@ export default function HireCreatorModal({
               <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 text-[11px] text-emerald-300 space-y-1">
                 <div className="font-semibold flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Nebula Escrow Protection</span>
+                  <span>{HIRE_MODAL_CONFIG.protectionTitle}</span>
                 </div>
-                <p className="text-[#C9B89B]">
-                  Your funds are locked in smart escrow. Payouts are only released when you approve each milestone's video cutdown and generation seed logs.
-                </p>
+                <p className="text-[#C9B89B]">{HIRE_MODAL_CONFIG.protectionBody}</p>
               </div>
 
               <div className="pt-3 flex justify-end gap-3">
@@ -200,14 +161,14 @@ export default function HireCreatorModal({
                   onClick={onClose}
                   className="px-4 py-2 text-[#C9B89B] hover:text-white"
                 >
-                  Cancel
+                  {HIRE_MODAL_CONFIG.cancelBtn}
                 </button>
                 <button
                   type="submit"
                   className="px-5 py-2.5 rounded-xl bg-[#FDFBF7] text-[#08070D] font-semibold hover:bg-white transition-all shadow-sm flex items-center gap-1.5"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>Fund Escrow & Start</span>
+                  <span>{HIRE_MODAL_CONFIG.submitBtn}</span>
                 </button>
               </div>
 

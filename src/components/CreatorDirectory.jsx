@@ -1,19 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Sparkles, 
-  ShieldCheck, 
-  Cpu, 
-  Star, 
-  Video, 
-  Image as ImageIcon, 
-  Play, 
-  SlidersHorizontal, 
-  CheckCircle2, 
+import {
+  ShieldCheck,
+  Cpu,
+  Star,
+  Image as ImageIcon,
+  Play,
+  SlidersHorizontal,
+  CheckCircle2,
   RotateCcw,
   Clock,
   ArrowRight
 } from 'lucide-react';
 import { ALL_TOOLS_LIST, ALL_CONTENT_TYPES, ALL_SPECIALIZATIONS } from '../data/creators';
+import { DIRECTORY_CONFIG } from '../constants/marketplaceConfig';
 
 export default function CreatorDirectory({
   creators,
@@ -22,67 +21,100 @@ export default function CreatorDirectory({
   onSelectCreator,
   onSelectPortfolioItem
 }) {
-  const [selectedContentType, setSelectedContentType] = useState('All Types');
-  const [selectedTool, setSelectedTool] = useState('All Tools');
-  const [selectedSpec, setSelectedSpec] = useState('All Specializations');
+  const { defaults, labels, sortOptions, emptyState, card } = DIRECTORY_CONFIG;
+
+  const [selectedContentType, setSelectedContentType] = useState(defaults.contentType);
+  const [selectedTool, setSelectedTool] = useState(defaults.tool);
+  const [selectedSpec, setSelectedSpec] = useState(defaults.specialization);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
-  const [sortBy, setSortBy] = useState('rating'); // 'rating', 'rate_asc', 'jobs'
+  const [sortBy, setSortBy] = useState(defaults.sortBy);
 
   // Filter & Search Logic
   const filteredCreators = useMemo(() => {
-    return creators.filter((creator) => {
-      // Text search match
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        creator.name.toLowerCase().includes(q) ||
-        creator.title.toLowerCase().includes(q) ||
-        creator.specializations.some((s) => s.toLowerCase().includes(q)) ||
-        creator.skills.some((s) => s.toLowerCase().includes(q)) ||
-        creator.tools.some((t) => t.name.toLowerCase().includes(q)) ||
-        creator.portfolios.some((p) => p.title.toLowerCase().includes(q) || p.promptArchitecture.toLowerCase().includes(q));
+    return creators
+      .filter((creator) => {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesSearch =
+          !q ||
+          creator.name.toLowerCase().includes(q) ||
+          creator.title.toLowerCase().includes(q) ||
+          creator.specializations.some((s) => s.toLowerCase().includes(q)) ||
+          creator.skills.some((s) => s.toLowerCase().includes(q)) ||
+          creator.tools.some((t) => t.name.toLowerCase().includes(q)) ||
+          creator.portfolios.some(
+            (p) =>
+              p.title.toLowerCase().includes(q) ||
+              p.promptArchitecture.toLowerCase().includes(q)
+          );
 
-      // Content Type match
-      const matchesContentType =
-        selectedContentType === 'All Types' ||
-        creator.portfolios.some((p) => p.contentType === selectedContentType);
+        const matchesContentType =
+          selectedContentType === defaults.contentType ||
+          creator.portfolios.some((p) => p.contentType === selectedContentType);
 
-      // Tool match
-      const matchesTool =
-        selectedTool === 'All Tools' ||
-        creator.tools.some((t) => t.name.toLowerCase().includes(selectedTool.toLowerCase()));
+        const matchesTool =
+          selectedTool === defaults.tool ||
+          creator.tools.some((t) =>
+            t.name.toLowerCase().includes(selectedTool.toLowerCase())
+          );
 
-      // Specialization match
-      const matchesSpec =
-        selectedSpec === 'All Specializations' ||
-        creator.specializations.includes(selectedSpec);
+        const matchesSpec =
+          selectedSpec === defaults.specialization ||
+          creator.specializations.includes(selectedSpec);
 
-      // Verification filter
-      const matchesVerified =
-        !verifiedOnly ||
-        (creator.verificationSignals.workflowVerified && creator.verificationSignals.toolVerified);
+        const matchesVerified =
+          !verifiedOnly ||
+          (creator.verificationSignals.workflowVerified &&
+            creator.verificationSignals.toolVerified);
 
-      return matchesSearch && matchesContentType && matchesTool && matchesSpec && matchesVerified;
-    }).sort((a, b) => {
-      if (sortBy === 'rating') return b.rating - a.rating;
-      if (sortBy === 'jobs') return b.verificationSignals.verifiedJobsCompleted - a.verificationSignals.verifiedJobsCompleted;
-      if (sortBy === 'rate_asc') {
-        const rateA = parseInt(a.startingProjectRate.replace(/[₹$,]/g, ''), 10);
-        const rateB = parseInt(b.startingProjectRate.replace(/[₹$,]/g, ''), 10);
-        return rateA - rateB;
-      }
-      return 0;
-    });
-  }, [creators, searchQuery, selectedContentType, selectedTool, selectedSpec, verifiedOnly, sortBy]);
+        return (
+          matchesSearch &&
+          matchesContentType &&
+          matchesTool &&
+          matchesSpec &&
+          matchesVerified
+        );
+      })
+      .sort((a, b) => {
+        if (sortBy === sortOptions[0].value) return b.rating - a.rating;
+        if (sortBy === sortOptions[1].value)
+          return (
+            b.verificationSignals.verifiedJobsCompleted -
+            a.verificationSignals.verifiedJobsCompleted
+          );
+        if (sortBy === sortOptions[2].value) {
+          const rateA = parseInt(a.startingProjectRate.replace(/[^0-9]/g, ''), 10);
+          const rateB = parseInt(b.startingProjectRate.replace(/[^0-9]/g, ''), 10);
+          return rateA - rateB;
+        }
+        return 0;
+      });
+  }, [
+    creators,
+    searchQuery,
+    selectedContentType,
+    selectedTool,
+    selectedSpec,
+    verifiedOnly,
+    sortBy,
+    defaults,
+    sortOptions
+  ]);
 
   const resetFilters = () => {
     setSearchQuery('');
-    setSelectedContentType('All Types');
-    setSelectedTool('All Tools');
-    setSelectedSpec('All Specializations');
+    setSelectedContentType(defaults.contentType);
+    setSelectedTool(defaults.tool);
+    setSelectedSpec(defaults.specialization);
     setVerifiedOnly(false);
-    setSortBy('rating');
+    setSortBy(defaults.sortBy);
   };
+
+  const hasActiveFilters =
+    Boolean(searchQuery) ||
+    selectedContentType !== defaults.contentType ||
+    selectedTool !== defaults.tool ||
+    selectedSpec !== defaults.specialization ||
+    verifiedOnly;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -94,7 +126,7 @@ export default function CreatorDirectory({
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EFE7D8]/10">
           <div className="flex items-center gap-2 text-xs text-[#C9B89B]">
             <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span className="uppercase tracking-wider font-medium">Filter Medium:</span>
+            <span className="uppercase tracking-wider font-medium">{labels.filterMedium}</span>
           </div>
 
           <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -125,7 +157,7 @@ export default function CreatorDirectory({
                 onChange={(e) => setSelectedTool(e.target.value)}
                 className="appearance-none bg-[#08070D]/80 border border-[#EFE7D8]/20 rounded-xl px-3 py-1.5 pr-8 text-xs text-[#EFE7D8] focus:outline-none focus:border-[#FDFBF7]"
               >
-                <option value="All Tools">All AI Tools & Models</option>
+                <option value={defaults.tool}>{labels.allToolsOption}</option>
                 {ALL_TOOLS_LIST.map((tool) => (
                   <option key={tool} value={tool} className="bg-[#120F1D]">
                     {tool}
@@ -165,7 +197,7 @@ export default function CreatorDirectory({
               />
               <span className="flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                Verified Workflows Only
+                {labels.verifiedOnlyToggle}
               </span>
             </label>
           </div>
@@ -173,7 +205,8 @@ export default function CreatorDirectory({
           {/* Right: Sort and Result Count */}
           <div className="flex items-center gap-3">
             <span className="text-xs text-[#C9B89B]/80 font-mono-code">
-              {filteredCreators.length} {filteredCreators.length === 1 ? 'creator' : 'creators'} found
+              {filteredCreators.length}{' '}
+              {filteredCreators.length === 1 ? labels.creatorSingular : labels.creatorPlural}
             </span>
 
             <div className="relative">
@@ -182,19 +215,21 @@ export default function CreatorDirectory({
                 onChange={(e) => setSortBy(e.target.value)}
                 className="appearance-none bg-[#08070D]/80 border border-[#EFE7D8]/20 rounded-xl px-3 py-1.5 pr-7 text-xs text-[#EFE7D8] focus:outline-none"
               >
-                <option value="rating" className="bg-[#120F1D]">Highest Rated</option>
-                <option value="jobs" className="bg-[#120F1D]">Most Completed Jobs</option>
-                <option value="rate_asc" className="bg-[#120F1D]">Starting Rate: Low to High</option>
+                {sortOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-[#120F1D]">
+                    {opt.label}
+                  </option>
+                ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#C9B89B]">
                 <span className="text-[10px]">&#9662;</span>
               </div>
             </div>
 
-            {(searchQuery || selectedContentType !== 'All Types' || selectedTool !== 'All Tools' || selectedSpec !== 'All Specializations' || verifiedOnly) && (
+            {hasActiveFilters && (
               <button
                 onClick={resetFilters}
-                title="Reset all filters"
+                title={labels.resetFiltersTooltip}
                 className="p-1.5 text-xs text-[#C9B89B] hover:text-[#FDFBF7] rounded-lg bg-[#FDFBF7]/10 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -210,14 +245,18 @@ export default function CreatorDirectory({
       {filteredCreators.length === 0 ? (
         <div className="text-center py-20 px-4 rounded-3xl bg-[#120F1D]/40 border border-[#EFE7D8]/15 max-w-2xl mx-auto backdrop-blur-md">
           <div className="w-16 h-16 rounded-full bg-[#FDFBF7]/5 border border-[#EFE7D8]/20 flex items-center justify-center mx-auto mb-4 text-2xl">
-            🌌
+            {emptyState.icon}
           </div>
           <h3 className="font-serif-celestial text-2xl text-[#FDFBF7] font-normal mb-2">
-            No Creators Matching Your Cosmic Query
+            {emptyState.title}
           </h3>
           <p className="text-sm text-[#C9B89B] max-w-md mx-auto mb-6">
-            We couldn't find verified AI creators with the exact combination of filters: 
-            <span className="text-[#FDFBF7]"> "{searchQuery || selectedTool || selectedContentType}"</span>.
+            {emptyState.descriptionPrefix}
+            <span className="text-[#FDFBF7]">
+              {' '}
+              "{searchQuery || selectedTool || selectedContentType}"
+            </span>
+            .
           </p>
           <div className="flex justify-center gap-3">
             <button
@@ -225,16 +264,16 @@ export default function CreatorDirectory({
               className="px-4 py-2 rounded-xl bg-[#FDFBF7] text-[#08070D] font-medium text-xs hover:bg-white transition-all shadow-sm flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              Reset All Filters
+              {emptyState.resetBtn}
             </button>
             <button
               onClick={() => {
                 resetFilters();
-                setSearchQuery('Flux.1');
+                setSearchQuery(emptyState.fallbackSearchQuery);
               }}
               className="px-4 py-2 rounded-xl bg-[#FDFBF7]/10 text-[#FDFBF7] border border-[#EFE7D8]/20 font-medium text-xs hover:bg-[#FDFBF7]/15 transition-all"
             >
-              Search "Flux.1"
+              {emptyState.fallbackSearchLabel}
             </button>
           </div>
         </div>
@@ -259,8 +298,8 @@ export default function CreatorDirectory({
                         className="w-14 h-14 rounded-2xl object-cover border border-[#EFE7D8]/30 shadow-md"
                       />
                       {creator.verificationSignals.workflowVerified && (
-                        <div 
-                          title="Verified AI Workflow: ComfyUI & Seed Reproducibility Tested"
+                        <div
+                          title={card.verifiedTooltip}
                           className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#08070D] border border-emerald-400 flex items-center justify-center text-emerald-400"
                         >
                           <ShieldCheck className="w-3.5 h-3.5" />
@@ -270,13 +309,15 @@ export default function CreatorDirectory({
 
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 
+                        <h3
                           onClick={() => onSelectCreator(creator)}
                           className="font-serif-celestial text-xl font-medium text-[#FDFBF7] group-hover:text-white transition-colors cursor-pointer hover:underline"
                         >
                           {creator.name}
                         </h3>
-                        <span className="text-xs text-[#C9B89B] font-mono-code">{creator.handle}</span>
+                        <span className="text-xs text-[#C9B89B] font-mono-code">
+                          {creator.handle}
+                        </span>
                       </div>
                       
                       <p className="text-xs text-[#EFE7D8]/90 font-light mt-0.5 line-clamp-1">
@@ -288,7 +329,9 @@ export default function CreatorDirectory({
                           <Star className="w-3 h-3 fill-[#DFC08D] text-[#DFC08D]" />
                           {creator.rating}
                         </span>
-                        <span>({creator.reviewsCount} reviews)</span>
+                        <span>
+                          ({creator.reviewsCount} {card.reviewsSuffix})
+                        </span>
                         <span>&bull;</span>
                         <span>{creator.location}</span>
                         <span>&bull;</span>
@@ -306,7 +349,7 @@ export default function CreatorDirectory({
                       {creator.startingProjectRate}
                     </div>
                     <div className="text-[11px] text-[#C9B89B]/80 font-light">
-                      starting project
+                      {card.startingProjectLabel}
                     </div>
                     <div className="text-[10px] text-[#C9B89B]/60 font-mono-code mt-0.5">
                       {creator.hourlyRate}
@@ -330,14 +373,14 @@ export default function CreatorDirectory({
                   {creator.verificationSignals.toolVerified && (
                     <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FDFBF7]/5 border border-[#EFE7D8]/20 text-[10px] text-[#EFE7D8] font-medium">
                       <Cpu className="w-3 h-3 text-[#C9B89B]" />
-                      <span>Verified Toolchain</span>
+                      <span>{card.verifiedToolchainBadge}</span>
                     </div>
                   )}
 
                   {creator.verificationSignals.commercialRightsGuaranteed && (
                     <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FDFBF7]/5 border border-[#EFE7D8]/20 text-[10px] text-[#EFE7D8] font-medium">
                       <CheckCircle2 className="w-3 h-3 text-[#DFC08D]" />
-                      <span>100% Commercial IP Cleared</span>
+                      <span>{card.commercialClearedBadge}</span>
                     </div>
                   )}
                 </div>
@@ -345,7 +388,7 @@ export default function CreatorDirectory({
                 {/* AI Tools & Models Chips */}
                 <div className="mb-4">
                   <div className="text-[10px] uppercase tracking-wider text-[#C9B89B]/70 font-semibold mb-1.5">
-                    Generative Toolchain & Models:
+                    {card.toolchainHeader}
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {creator.tools.map((t) => (
@@ -354,7 +397,12 @@ export default function CreatorDirectory({
                         className="px-2 py-0.5 rounded-md bg-[#08070D]/70 border border-[#EFE7D8]/15 text-[11px] text-[#FDFBF7] font-mono-code flex items-center gap-1"
                       >
                         {t.name}
-                        {t.verified && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" title="API Verified" />}
+                        {t.verified && (
+                          <span
+                            className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                            title={card.apiVerifiedTooltip}
+                          />
+                        )}
                       </span>
                     ))}
                   </div>
@@ -363,8 +411,10 @@ export default function CreatorDirectory({
                 {/* Portfolio Showcase Grid (Thumbnails) */}
                 <div className="mb-4">
                   <div className="text-[10px] uppercase tracking-wider text-[#C9B89B]/70 font-semibold mb-2 flex items-center justify-between">
-                    <span>Selected AI Generations:</span>
-                    <span className="text-[10px] text-[#C9B89B] font-mono-code">Click to inspect workflow & prompts</span>
+                    <span>{card.portfolioHeader}</span>
+                    <span className="text-[10px] text-[#C9B89B] font-mono-code">
+                      {card.portfolioSubheader}
+                    </span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {creator.portfolios.map((item) => (
@@ -382,7 +432,7 @@ export default function CreatorDirectory({
                         
                         {/* Type Icon */}
                         <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-md bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/90">
-                          {item.contentType.includes('Video') ? (
+                          {item.videoSimulated ? (
                             <Play className="w-2.5 h-2.5 fill-white" />
                           ) : (
                             <ImageIcon className="w-2.5 h-2.5" />
@@ -407,8 +457,10 @@ export default function CreatorDirectory({
               {/* Card Footer: View Full Profile & Hire Action */}
               <div className="pt-4 border-t border-[#EFE7D8]/10 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-1.5 text-[11px] text-[#C9B89B] font-light">
-                  <span className="text-[#FDFBF7] font-semibold">{creator.verificationSignals.verifiedJobsCompleted}</span>
-                  <span>commercial jobs delivered</span>
+                  <span className="text-[#FDFBF7] font-semibold">
+                    {creator.verificationSignals.verifiedJobsCompleted}
+                  </span>
+                  <span>{card.jobsDeliveredSuffix}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -416,7 +468,7 @@ export default function CreatorDirectory({
                     onClick={() => onSelectCreator(creator)}
                     className="px-3.5 py-1.5 rounded-xl border border-[#EFE7D8]/20 bg-[#FDFBF7]/5 hover:bg-[#FDFBF7]/10 text-[#FDFBF7] text-xs font-medium transition-all flex items-center gap-1"
                   >
-                    <span>View Profile & Nodes</span>
+                    <span>{card.viewProfileBtn}</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
                 </div>

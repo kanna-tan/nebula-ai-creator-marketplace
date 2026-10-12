@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Copy, 
-  Check, 
-  Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
-  Layers, 
-  ShieldCheck, 
-  Cpu, 
-  Maximize2, 
-  FileText,
+import {
+  X,
+  Copy,
+  Check,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Layers,
+  ShieldCheck,
   Sparkles,
   ArrowRight
 } from 'lucide-react';
+import { BRAND_CONFIG, PORTFOLIO_MODAL_CONFIG } from '../constants/marketplaceConfig';
 
 export default function PortfolioDetailModal({
   item,
@@ -22,10 +20,11 @@ export default function PortfolioDetailModal({
   onClose,
   onOpenHireCreator
 }) {
+  const { tabs, paramLabels } = PORTFOLIO_MODAL_CONFIG;
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [activeTab, setActiveTab] = useState('workflow'); // 'workflow', 'prompt', 'specs'
+  const [activeTab, setActiveTab] = useState(tabs.workflow.id);
 
   if (!item) return null;
 
@@ -35,22 +34,26 @@ export default function PortfolioDetailModal({
     setTimeout(() => setCopiedPrompt(false), 2000);
   };
 
+  const genParams = item.generationParams || {};
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto backdrop-blur-2xl bg-black/80">
-      <div 
+      <div
         className="relative w-full max-w-5xl bg-[#0B0914] border border-[#EFE7D8]/20 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#EFE7D8]/10 bg-[#120F1D]/80">
           <div className="flex items-center gap-3">
-            <span className="text-xl">✨</span>
+            <span className="text-xl">{BRAND_CONFIG.logoIcon}</span>
             <div>
               <h3 className="font-serif-celestial text-lg sm:text-xl font-medium text-[#FDFBF7]">
                 {item.title}
               </h3>
               <p className="text-xs text-[#C9B89B] font-light">
-                Created by <span className="text-[#FDFBF7] font-medium">{creator?.name}</span> for {item.client}
+                {PORTFOLIO_MODAL_CONFIG.createdByPrefix}{' '}
+                <span className="text-[#FDFBF7] font-medium">{creator?.name}</span>{' '}
+                {PORTFOLIO_MODAL_CONFIG.forClientPrefix} {item.client}
               </p>
             </div>
           </div>
@@ -76,7 +79,9 @@ export default function PortfolioDetailModal({
                 <img
                   src={item.thumbnail}
                   alt={item.title}
-                  className={`w-full h-full object-cover transition-transform duration-700 ${isPlaying ? 'scale-105' : 'scale-100'}`}
+                  className={`w-full h-full object-cover transition-transform duration-700 ${
+                    isPlaying ? 'scale-105' : 'scale-100'
+                  }`}
                 />
 
                 {/* Simulated Ethereal Scanline / Ambient Cosmic Glow */}
@@ -100,11 +105,15 @@ export default function PortfolioDetailModal({
                         onClick={() => setIsPlaying(!isPlaying)}
                         className="w-8 h-8 rounded-lg bg-[#FDFBF7] text-[#08070D] flex items-center justify-center hover:scale-105 transition-transform"
                       >
-                        {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                        {isPlaying ? (
+                          <Pause className="w-4 h-4 fill-current" />
+                        ) : (
+                          <Play className="w-4 h-4 fill-current ml-0.5" />
+                        )}
                       </button>
 
                       <div className="flex items-center gap-2 text-[11px] font-mono-code text-[#EFE7D8]">
-                        <span>0:18</span>
+                        <span>{genParams.currentTime}</span>
                         <span>/</span>
                         <span>{item.duration}</span>
                       </div>
@@ -120,7 +129,11 @@ export default function PortfolioDetailModal({
                         onClick={() => setIsMuted(!isMuted)}
                         className="p-1.5 hover:text-[#DFC08D] text-white transition-colors"
                       >
-                        {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                        {isMuted ? (
+                          <VolumeX className="w-4 h-4" />
+                        ) : (
+                          <Volume2 className="w-4 h-4" />
+                        )}
                       </button>
                     </div>
                   </div>
@@ -130,7 +143,9 @@ export default function PortfolioDetailModal({
               {/* Stack & Metadata Pills */}
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[#C9B89B] font-light">Stack:</span>
+                  <span className="text-[#C9B89B] font-light">
+                    {PORTFOLIO_MODAL_CONFIG.stackLabel}
+                  </span>
                   {item.primaryTools.map((t) => (
                     <span
                       key={t}
@@ -142,9 +157,13 @@ export default function PortfolioDetailModal({
                 </div>
 
                 <div className="flex items-center gap-2 text-[11px] text-[#C9B89B]">
-                  <span>❤️ {item.likes} saves</span>
+                  <span>
+                    ❤️ {item.likes} {PORTFOLIO_MODAL_CONFIG.savesSuffix}
+                  </span>
                   <span>&bull;</span>
-                  <span className="text-emerald-400 font-mono-code">Reproducible Graph</span>
+                  <span className="text-emerald-400 font-mono-code">
+                    {PORTFOLIO_MODAL_CONFIG.reproducibleBadge}
+                  </span>
                 </div>
               </div>
             </div>
@@ -152,8 +171,13 @@ export default function PortfolioDetailModal({
             {/* Bottom CTA to Hire for similar output */}
             <div className="mt-6 pt-4 border-t border-[#EFE7D8]/10 flex items-center justify-between">
               <div>
-                <p className="text-xs text-[#EFE7D8] font-medium">Want similar aesthetic for your campaign?</p>
-                <p className="text-[11px] text-[#C9B89B] font-light">Engage {creator?.name} through Nebula Escrow</p>
+                <p className="text-xs text-[#EFE7D8] font-medium">
+                  {PORTFOLIO_MODAL_CONFIG.ctaTitle}
+                </p>
+                <p className="text-[11px] text-[#C9B89B] font-light">
+                  {PORTFOLIO_MODAL_CONFIG.ctaSubtitlePrefix} {creator?.name}{' '}
+                  {PORTFOLIO_MODAL_CONFIG.ctaSubtitleSuffix}
+                </p>
               </div>
               <button
                 onClick={() => {
@@ -162,7 +186,7 @@ export default function PortfolioDetailModal({
                 }}
                 className="px-4 py-2 rounded-xl bg-[#FDFBF7] text-[#08070D] font-semibold text-xs hover:bg-white transition-all shadow-sm flex items-center gap-1.5"
               >
-                <span>Hire This Creator</span>
+                <span>{PORTFOLIO_MODAL_CONFIG.hireBtn}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -174,35 +198,39 @@ export default function PortfolioDetailModal({
               {/* Inspection Tabs */}
               <div className="flex items-center p-1 rounded-xl bg-[#08070D]/80 border border-[#EFE7D8]/15 text-xs mb-5">
                 <button
-                  onClick={() => setActiveTab('workflow')}
+                  onClick={() => setActiveTab(tabs.workflow.id)}
                   className={`flex-1 py-1.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 ${
-                    activeTab === 'workflow'
+                    activeTab === tabs.workflow.id
                       ? 'bg-[#FDFBF7] text-[#08070D] font-semibold shadow-sm'
                       : 'text-[#C9B89B] hover:text-[#FDFBF7]'
                   }`}
                 >
                   <Layers className="w-3.5 h-3.5" />
-                  <span>Workflow Pipeline</span>
+                  <span>{tabs.workflow.label}</span>
                 </button>
                 <button
-                  onClick={() => setActiveTab('prompt')}
+                  onClick={() => setActiveTab(tabs.prompt.id)}
                   className={`flex-1 py-1.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 ${
-                    activeTab === 'prompt'
+                    activeTab === tabs.prompt.id
                       ? 'bg-[#FDFBF7] text-[#08070D] font-semibold shadow-sm'
                       : 'text-[#C9B89B] hover:text-[#FDFBF7]'
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Prompt Architecture</span>
+                  <span>{tabs.prompt.label}</span>
                 </button>
               </div>
 
               {/* Tab 1: Step-by-Step Workflow Pipeline Nodes */}
-              {activeTab === 'workflow' && (
+              {activeTab === tabs.workflow.id && (
                 <div className="space-y-3.5">
                   <div className="flex items-center justify-between text-xs text-[#C9B89B] mb-1">
-                    <span className="uppercase tracking-wider font-semibold">Multi-Model Node Sequence:</span>
-                    <span className="font-mono-code text-[11px] text-emerald-400">ComfyUI Graph Verified</span>
+                    <span className="uppercase tracking-wider font-semibold">
+                      {PORTFOLIO_MODAL_CONFIG.workflowHeader}
+                    </span>
+                    <span className="font-mono-code text-[11px] text-emerald-400">
+                      {PORTFOLIO_MODAL_CONFIG.workflowBadge}
+                    </span>
                   </div>
 
                   {item.workflowBreakdown.map((step, idx) => (
@@ -215,7 +243,8 @@ export default function PortfolioDetailModal({
                           {step.step}
                         </span>
                         <span className="text-[10px] text-[#DFC08D] bg-[#DFC08D]/10 px-2 py-0.5 rounded border border-[#DFC08D]/20">
-                          Node #{idx + 1}
+                          {PORTFOLIO_MODAL_CONFIG.nodePrefix}
+                          {idx + 1}
                         </span>
                       </div>
                       <div className="text-[11px] text-[#E2D6C0] font-mono-code mb-1">
@@ -227,36 +256,56 @@ export default function PortfolioDetailModal({
                     </div>
                   ))}
 
-                  {/* Seed & Generation Parameters Box */}
+                  {/* Seed & Generation Parameters Box driven dynamically by item.generationParams */}
                   <div className="p-3 rounded-xl bg-[#08070D]/60 border border-[#EFE7D8]/10 text-xs">
                     <span className="text-[10px] uppercase tracking-wider text-[#C9B89B] font-semibold block mb-2">
-                      Generation Parameters & Seeds
+                      {PORTFOLIO_MODAL_CONFIG.paramsHeader}
                     </span>
                     <div className="grid grid-cols-2 gap-2 text-[11px] font-mono-code text-[#EFE7D8]">
-                      <div>Seed: <span className="text-[#FDFBF7]">#94821037</span></div>
-                      <div>Sampler: <span className="text-[#FDFBF7]">Euler a</span></div>
-                      <div>CFG Scale: <span className="text-[#FDFBF7]">7.5</span></div>
-                      <div>Steps: <span className="text-[#FDFBF7]">38</span></div>
+                      <div>
+                        {paramLabels.seed}{' '}
+                        <span className="text-[#FDFBF7]">{genParams.seed}</span>
+                      </div>
+                      <div>
+                        {paramLabels.sampler}{' '}
+                        <span className="text-[#FDFBF7]">{genParams.sampler}</span>
+                      </div>
+                      <div>
+                        {paramLabels.cfgScale}{' '}
+                        <span className="text-[#FDFBF7]">{genParams.cfgScale}</span>
+                      </div>
+                      <div>
+                        {paramLabels.steps}{' '}
+                        <span className="text-[#FDFBF7]">{genParams.steps}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
 
               {/* Tab 2: Exact Prompt Architecture */}
-              {activeTab === 'prompt' && (
+              {activeTab === tabs.prompt.id && (
                 <div className="space-y-4">
                   {/* Positive Prompt */}
                   <div className="p-3.5 rounded-xl bg-[#08070D]/80 border border-[#EFE7D8]/15 text-xs">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-semibold">
-                        Positive Prompt Engineering:
+                        {PORTFOLIO_MODAL_CONFIG.positivePromptHeader}
                       </span>
                       <button
                         onClick={handleCopyPrompt}
                         className="flex items-center gap-1 text-[11px] text-[#C9B89B] hover:text-[#FDFBF7] transition-colors"
                       >
-                        {copiedPrompt ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        <span>{copiedPrompt ? 'Copied!' : 'Copy Prompt'}</span>
+                        {copiedPrompt ? (
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5" />
+                        )}
+                        <span>
+                          {copiedPrompt
+                            ? PORTFOLIO_MODAL_CONFIG.copiedBtn
+                            : PORTFOLIO_MODAL_CONFIG.copyPromptBtn}
+                        </span>
                       </button>
                     </div>
                     <p className="text-xs text-[#FDFBF7] font-mono-code leading-relaxed bg-[#120F1D]/60 p-2.5 rounded-lg border border-[#EFE7D8]/10 select-all">
@@ -267,7 +316,7 @@ export default function PortfolioDetailModal({
                   {/* Negative Prompt */}
                   <div className="p-3.5 rounded-xl bg-[#08070D]/80 border border-[#EFE7D8]/15 text-xs">
                     <div className="text-[10px] uppercase tracking-wider text-rose-300 font-semibold mb-2">
-                      Negative Tokens (Artifact Pruning):
+                      {PORTFOLIO_MODAL_CONFIG.negativePromptHeader}
                     </div>
                     <p className="text-xs text-[#E2D6C0]/80 font-mono-code leading-relaxed bg-[#120F1D]/60 p-2.5 rounded-lg border border-[#EFE7D8]/10 select-all">
                       {item.negativePrompt}
@@ -278,10 +327,10 @@ export default function PortfolioDetailModal({
                   <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-xs">
                     <div className="flex items-center gap-1.5 text-emerald-300 font-medium mb-1">
                       <ShieldCheck className="w-4 h-4" />
-                      <span>Commercial IP Clearance Verified</span>
+                      <span>{PORTFOLIO_MODAL_CONFIG.ipVerifiedTitle}</span>
                     </div>
                     <p className="text-[11px] text-[#C9B89B] leading-relaxed">
-                      Generated using commercially licensed base models. The client received full intellectual property buyout with indemnified copyright representations.
+                      {PORTFOLIO_MODAL_CONFIG.ipVerifiedBody}
                     </p>
                   </div>
                 </div>

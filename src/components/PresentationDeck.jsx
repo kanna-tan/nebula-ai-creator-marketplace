@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  X, 
-  ChevronLeft, 
-  ChevronRight, 
-  Presentation, 
-  Sparkles, 
-  CheckCircle2, 
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Presentation,
+  Sparkles,
+  CheckCircle2,
   Maximize2,
-  Minimize2,
-  Layers,
-  Award
+  Minimize2
 } from 'lucide-react';
 import { PRESENTATION_SLIDES } from '../data/presentationSlides';
+import { DECK_MODAL_CONFIG } from '../constants/marketplaceConfig';
 
 export default function PresentationDeck({ isOpen, onClose }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -42,7 +41,7 @@ export default function PresentationDeck({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 backdrop-blur-2xl bg-black/90">
-      <div 
+      <div
         className={`relative w-full max-w-5xl bg-[#090710] border border-[#EFE7D8]/20 rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all ${
           isFullscreen ? 'fixed inset-0 max-w-none rounded-none border-none' : 'h-[85vh]'
         }`}
@@ -53,10 +52,10 @@ export default function PresentationDeck({ isOpen, onClose }) {
           <div className="flex items-center gap-2.5">
             <Presentation className="w-4 h-4 text-[#DFC08D]" />
             <span className="font-cinzel text-sm font-semibold tracking-wider text-[#FDFBF7]">
-              NEBULA &bull; PLATFORM DEMO & PITCH DECK
+              {DECK_MODAL_CONFIG.headerTitle}
             </span>
             <span className="text-[10px] text-[#C9B89B] font-mono-code hidden sm:inline">
-              (Use Arrow Keys or Space to navigate)
+              {DECK_MODAL_CONFIG.headerHint}
             </span>
           </div>
 
@@ -64,9 +63,17 @@ export default function PresentationDeck({ isOpen, onClose }) {
             <button
               onClick={() => setIsFullscreen(!isFullscreen)}
               className="p-2 rounded-xl text-[#C9B89B] hover:text-white hover:bg-white/5 transition-colors"
-              title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+              title={
+                isFullscreen
+                  ? DECK_MODAL_CONFIG.exitFullscreenTooltip
+                  : DECK_MODAL_CONFIG.fullscreenTooltip
+              }
             >
-              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+              {isFullscreen ? (
+                <Minimize2 className="w-4 h-4" />
+              ) : (
+                <Maximize2 className="w-4 h-4" />
+              )}
             </button>
             <button
               onClick={onClose}
@@ -81,10 +88,11 @@ export default function PresentationDeck({ isOpen, onClose }) {
         <div className="flex-1 p-6 sm:p-12 overflow-y-auto flex flex-col justify-between relative">
           
           {/* Subtle cosmic background glow for current slide */}
-          <div 
+          <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[140px] opacity-15 pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, #FDFBF7 0%, #8A73B3 60%, transparent 80%)'
+              background:
+                'radial-gradient(circle, #FDFBF7 0%, #8A73B3 60%, transparent 80%)'
             }}
           />
 
@@ -141,14 +149,15 @@ export default function PresentationDeck({ isOpen, onClose }) {
                     ? 'w-6 bg-[#FDFBF7]'
                     : 'w-2 bg-[#EFE7D8]/20 hover:bg-[#EFE7D8]/40'
                 }`}
-                title={`Jump to slide ${idx + 1}`}
+                title={`${DECK_MODAL_CONFIG.jumpSlidePrefix} ${idx + 1}`}
               />
             ))}
           </div>
 
           <div className="flex items-center gap-4">
             <span className="text-xs text-[#C9B89B] font-mono-code">
-              Slide {currentSlideIndex + 1} of {totalSlides}
+              {DECK_MODAL_CONFIG.slideCounterPrefix} {currentSlideIndex + 1}{' '}
+              {DECK_MODAL_CONFIG.slideCounterSeparator} {totalSlides}
             </span>
 
             <div className="flex items-center gap-2">
@@ -161,7 +170,9 @@ export default function PresentationDeck({ isOpen, onClose }) {
               </button>
 
               <button
-                onClick={() => setCurrentSlideIndex((prev) => Math.min(totalSlides - 1, prev + 1))}
+                onClick={() =>
+                  setCurrentSlideIndex((prev) => Math.min(totalSlides - 1, prev + 1))
+                }
                 disabled={currentSlideIndex === totalSlides - 1}
                 className="p-2 rounded-xl border border-[#EFE7D8]/20 bg-[#FDFBF7] text-[#08070D] hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
               >

@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import { 
-  Layers, 
-  CheckCircle2, 
-  Clock, 
-  DollarSign, 
-  FileText, 
-  Download, 
-  ShieldCheck, 
-  ExternalLink, 
-  Sparkles,
-  ArrowRight,
-  Eye,
+import {
+  Layers,
+  CheckCircle2,
+  Download,
+  ShieldCheck,
   Check
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { ENGAGEMENTS_CONFIG } from '../constants/marketplaceConfig';
 
-export default function EngagementsTracker({ engagements, onUpdateEngagement }) {
+export default function EngagementsTracker({ engagements }) {
   const [selectedEngId, setSelectedEngId] = useState(engagements[0]?.id || '');
   const [releasedMilestones, setReleasedMilestones] = useState({});
 
-  const currentEngagement = engagements.find((e) => e.id === selectedEngId) || engagements[0];
+  const currentEngagement =
+    engagements.find((e) => e.id === selectedEngId) || engagements[0];
 
   const handleReleaseEscrow = (milestoneId) => {
     setReleasedMilestones((prev) => ({
@@ -38,7 +33,7 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
   if (!currentEngagement) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-16 text-center text-[#C9B89B]">
-        No active engagements yet.
+        {ENGAGEMENTS_CONFIG.emptyMessage}
       </div>
     );
   }
@@ -50,13 +45,13 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
       <div className="mb-8">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDFBF7]/5 border border-[#EFE7D8]/20 text-xs text-[#EFE7D8] font-mono-code mb-2">
           <Layers className="w-3.5 h-3.5 text-[#C9B89B]" />
-          <span>Active Contracts & Delivery Workspace</span>
+          <span>{ENGAGEMENTS_CONFIG.badge}</span>
         </div>
         <h2 className="font-serif-celestial text-3xl sm:text-4xl font-normal text-[#FDFBF7]">
-          Engagement & Delivery Pipeline
+          {ENGAGEMENTS_CONFIG.title}
         </h2>
         <p className="text-xs sm:text-sm text-[#C9B89B] font-light max-w-xl mt-1">
-          Manage engagements from discovery through proposal, keyframe verification, motion review, and final IP transfer.
+          {ENGAGEMENTS_CONFIG.subtitle}
         </p>
       </div>
 
@@ -72,13 +67,15 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
                 : 'bg-[#120F1D]/60 border-[#EFE7D8]/15 hover:border-[#EFE7D8]/30'
             }`}
           >
-            <div className="text-xs font-semibold text-[#FDFBF7] truncate">{eng.campaignTitle}</div>
+            <div className="text-xs font-semibold text-[#FDFBF7] truncate">
+              {eng.campaignTitle}
+            </div>
             <div className="text-[11px] text-[#C9B89B] flex items-center justify-between mt-1">
               <span>{eng.creator.name}</span>
               <span className="font-mono-code text-[#EFE7D8]">{eng.totalBudget}</span>
             </div>
             <div className="w-full bg-[#08070D] h-1.5 rounded-full overflow-hidden mt-2.5">
-              <div 
+              <div
                 className="bg-gradient-to-r from-[#FDFBF7] to-[#DFC08D] h-full"
                 style={{ width: `${eng.progressPercent}%` }}
               />
@@ -98,7 +95,7 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
             <div className="flex items-center justify-between mb-4">
               <div>
                 <span className="text-[10px] uppercase tracking-wider text-emerald-400 font-mono-code font-semibold">
-                  Stage: {currentEngagement.stage}
+                  {ENGAGEMENTS_CONFIG.stagePrefix} {currentEngagement.stage}
                 </span>
                 <h3 className="font-serif-celestial text-2xl text-[#FDFBF7] font-medium mt-0.5">
                   {currentEngagement.campaignTitle}
@@ -111,36 +108,55 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
               </div>
             </div>
 
-            {/* Stepper Visualization */}
+            {/* Dynamic Stepper Visualization driven by currentEngagement.currentStepIndex */}
             <div className="grid grid-cols-4 gap-2 pt-2 text-center text-xs">
-              <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
-                <div className="font-semibold">1. Discovery</div>
-                <div className="text-[10px] text-emerald-400/80">Matched</div>
-              </div>
-              <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
-                <div className="font-semibold">2. Keyframes</div>
-                <div className="text-[10px] text-emerald-400/80">Approved</div>
-              </div>
-              <div className="p-2 rounded-xl bg-[#FDFBF7]/15 border border-[#EFE7D8]/30 text-[#FDFBF7] font-semibold">
-                <div>3. Motion Review</div>
-                <div className="text-[10px] text-[#DFC08D]">Active Phase</div>
-              </div>
-              <div className="p-2 rounded-xl bg-[#08070D]/40 border border-[#EFE7D8]/10 text-[#C9B89B]">
-                <div>4. IP Transfer</div>
-                <div className="text-[10px] text-[#C9B89B]/60">Pending</div>
-              </div>
+              {ENGAGEMENTS_CONFIG.pipelineSteps.map((step) => {
+                const isCompleted = step.index < currentEngagement.currentStepIndex;
+                const isActive = step.index === currentEngagement.currentStepIndex;
+
+                return (
+                  <div
+                    key={step.index}
+                    className={`p-2 rounded-xl border ${
+                      isCompleted
+                        ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
+                        : isActive
+                        ? 'bg-[#FDFBF7]/15 border-[#EFE7D8]/30 text-[#FDFBF7] font-semibold'
+                        : 'bg-[#08070D]/40 border-[#EFE7D8]/10 text-[#C9B89B]'
+                    }`}
+                  >
+                    <div className={isCompleted ? 'font-semibold' : ''}>{step.title}</div>
+                    <div
+                      className={`text-[10px] ${
+                        isCompleted
+                          ? 'text-emerald-400/80'
+                          : isActive
+                          ? 'text-[#DFC08D]'
+                          : 'text-[#C9B89B]/60'
+                      }`}
+                    >
+                      {isCompleted
+                        ? step.completedStatus
+                        : isActive
+                        ? step.activeStatus
+                        : step.pendingStatus}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Detailed Milestone Escrow Release Cards */}
           <div className="p-6 rounded-3xl bg-[#120F1D]/70 border border-[#EFE7D8]/15 backdrop-blur-xl">
             <h4 className="text-xs uppercase tracking-wider text-[#C9B89B] font-semibold mb-4">
-              Milestone Escrow Schedule & Sign-Offs
+              {ENGAGEMENTS_CONFIG.milestoneHeader}
             </h4>
 
             <div className="space-y-3">
               {currentEngagement.milestones.map((m, idx) => {
-                const isReleased = releasedMilestones[m.id] || m.status.includes('Completed');
+                const isReleased =
+                  releasedMilestones[m.id] || m.status.toLowerCase().includes('completed');
 
                 return (
                   <div
@@ -155,7 +171,8 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-mono-code text-xs text-[#DFC08D]">
-                            Milestone #{idx + 1}
+                            {ENGAGEMENTS_CONFIG.milestonePrefix}
+                            {idx + 1}
                           </span>
                           <span className="text-xs font-semibold text-[#FDFBF7]">
                             {m.title}
@@ -168,14 +185,16 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
 
                       <div className="flex items-center gap-3 shrink-0">
                         <div className="text-right">
-                          <div className="text-sm font-semibold text-[#FDFBF7]">{m.payout}</div>
+                          <div className="text-sm font-semibold text-[#FDFBF7]">
+                            {m.payout}
+                          </div>
                           <div className="text-[10px] text-[#C9B89B]">{m.date}</div>
                         </div>
 
                         {isReleased ? (
                           <div className="px-3 py-1.5 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-medium flex items-center gap-1">
                             <Check className="w-3.5 h-3.5" />
-                            <span>Escrow Released</span>
+                            <span>{ENGAGEMENTS_CONFIG.releasedBadge}</span>
                           </div>
                         ) : (
                           <button
@@ -183,7 +202,7 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
                             className="px-3.5 py-1.5 rounded-xl bg-[#FDFBF7] text-[#08070D] hover:bg-white text-xs font-semibold shadow-sm transition-all flex items-center gap-1"
                           >
                             <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>Approve & Release</span>
+                            <span>{ENGAGEMENTS_CONFIG.approveBtn}</span>
                           </button>
                         )}
                       </div>
@@ -202,7 +221,7 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
           {/* Creator Profile Summary */}
           <div className="p-6 rounded-3xl bg-[#120F1D]/70 border border-[#EFE7D8]/15 backdrop-blur-xl">
             <span className="text-[10px] uppercase tracking-wider text-[#C9B89B] font-semibold block mb-3">
-              Contracted AI Director
+              {ENGAGEMENTS_CONFIG.directorHeader}
             </span>
             <div className="flex items-center gap-3">
               <img
@@ -225,9 +244,11 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
           <div className="p-6 rounded-3xl bg-[#120F1D]/70 border border-[#EFE7D8]/15 backdrop-blur-xl">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] uppercase tracking-wider text-[#C9B89B] font-semibold">
-                Submission Artifacts & Vault
+                {ENGAGEMENTS_CONFIG.vaultHeader}
               </span>
-              <span className="text-[10px] text-emerald-400 font-mono-code">SHA-256 Verified</span>
+              <span className="text-[10px] text-emerald-400 font-mono-code">
+                {ENGAGEMENTS_CONFIG.vaultBadge}
+              </span>
             </div>
 
             <div className="space-y-2.5">
@@ -246,9 +267,9 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
                   </div>
 
                   <button
-                    onClick={() => alert(`Downloading verified asset: ${asset.name}`)}
+                    onClick={() => alert(`${ENGAGEMENTS_CONFIG.downloadTooltip}: ${asset.name}`)}
                     className="p-2 rounded-lg bg-[#FDFBF7]/5 hover:bg-[#FDFBF7]/15 text-[#EFE7D8] transition-colors"
-                    title="Download asset"
+                    title={ENGAGEMENTS_CONFIG.downloadTooltip}
                   >
                     <Download className="w-3.5 h-3.5" />
                   </button>
@@ -260,8 +281,10 @@ export default function EngagementsTracker({ engagements, onUpdateEngagement }) 
             <div className="mt-4 pt-4 border-t border-[#EFE7D8]/10 flex items-center gap-2.5 text-xs text-emerald-300">
               <ShieldCheck className="w-5 h-5 shrink-0" />
               <div className="text-[11px] leading-tight">
-                <span className="font-semibold block">Commercial IP Warranty</span>
-                100% indemnified against model infringement
+                <span className="font-semibold block">
+                  {ENGAGEMENTS_CONFIG.warrantyTitle}
+                </span>
+                {ENGAGEMENTS_CONFIG.warrantySubtitle}
               </div>
             </div>
           </div>
