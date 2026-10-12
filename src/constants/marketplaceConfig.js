@@ -6,7 +6,8 @@ import { BRIEF_TEMPLATES } from '../data/briefs';
 export const BRAND_CONFIG = {
   name: 'NEBULA',
   tagline: 'The Ethereal AI Creator Exchange',
-  logoIcon: '✨',
+  logoMark: 'N',
+  logoIcon: 'N',
   currencySymbol: '₹',
   currencyCode: 'INR',
   currencyLocale: 'en-IN',

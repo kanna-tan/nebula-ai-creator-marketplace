@@ -18,6 +18,7 @@ import {
   COLOR_GRADES,
   NAVBAR_TEXT
 } from '../constants/marketplaceConfig';
+import NebulaLogo from './NebulaLogo';
 
 const ICON_MAP = {
   compass: Compass,
@@ -53,10 +54,7 @@ export default function Navbar({
           
           {/* Celestial Logo & Brand */}
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveTab(TABS.CREATORS)}>
-            <div className="relative w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-[#FFFDF9]/25 via-[#F5EEDB]/15 to-[#D4BC92]/20 border border-[#F3EAD8]/40 group-hover:border-[#FFFDF9]/80 transition-all shadow-[0_0_20px_rgba(243,234,216,0.25)]">
-              <span className="text-xl">{BRAND_CONFIG.logoIcon}</span>
-              <div className="absolute inset-0 rounded-full animate-ping opacity-25 bg-[#FFFDF9]" />
-            </div>
+            <NebulaLogo size="md" />
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-cinzel text-xl sm:text-2xl font-bold tracking-[0.2em] text-[#FFFDF9] group-hover:text-white transition-colors">

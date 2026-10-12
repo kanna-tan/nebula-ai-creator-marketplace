@@ -12,7 +12,8 @@ import {
   Sparkles,
   ArrowRight
 } from 'lucide-react';
-import { BRAND_CONFIG, PORTFOLIO_MODAL_CONFIG } from '../constants/marketplaceConfig';
+import { PORTFOLIO_MODAL_CONFIG } from '../constants/marketplaceConfig';
+import NebulaLogo from './NebulaLogo';
 
 export default function PortfolioDetailModal({
   item,
@@ -45,7 +46,7 @@ export default function PortfolioDetailModal({
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#EFE7D8]/10 bg-[#120F1D]/80">
           <div className="flex items-center gap-3">
-            <span className="text-xl">{BRAND_CONFIG.logoIcon}</span>
+            <NebulaLogo size="sm" />
             <div>
               <h3 className="font-serif-celestial text-lg sm:text-xl font-medium text-[#FDFBF7]">
                 {item.title}

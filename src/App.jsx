@@ -12,6 +12,7 @@ import CreateBriefModal from './components/CreateBriefModal';
 import DataModelModal from './components/DataModelModal';
 import PresentationDeck from './components/PresentationDeck';
 import HireCreatorModal from './components/HireCreatorModal';
+import NebulaLogo from './components/NebulaLogo';
 
 import { CREATORS } from './data/creators';
 import { INITIAL_BRIEFS } from './data/briefs';
@@ -145,9 +146,7 @@ export default function App() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
               
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FDFBF7]/20 to-[#C9B89B]/10 border border-[#EFE7D8]/30 flex items-center justify-center">
-                  <span>{BRAND_CONFIG.logoIcon}</span>
-                </div>
+                <NebulaLogo size="sm" />
                 <div>
                   <span className="font-cinzel text-lg font-bold tracking-[0.2em] text-[#FDFBF7]">
                     {BRAND_CONFIG.name}
